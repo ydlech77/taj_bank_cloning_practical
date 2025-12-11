@@ -27,6 +27,222 @@
     <!-- Scrollbar1 css-->
     <link rel="stylesheet" type="text/css" href="/assets/css/animate.css">
     <style>
+
+        /* ===============================
+   GLOBAL PAGE BACKGROUND + OVERLAY
+==================================*/
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #000;
+    overflow-x: hidden;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.45);
+    z-index: 2;
+}
+
+/* Background fade slideshow */
+#cf3 {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+#cf3 img {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    object-fit: cover;
+    opacity: 0;
+    animation: fadecycle 18s infinite;
+}
+
+#cf3 img:nth-child(1) { animation-delay: 0s; }
+#cf3 img:nth-child(2) { animation-delay: 6s; }
+#cf3 img:nth-child(3) { animation-delay: 12s; }
+
+@keyframes fadecycle {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    33% { opacity: 1; }
+    43% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* ===============================
+   MAIN CONTENT
+==================================*/
+
+.main1 {
+    position: relative;
+    z-index: 3;
+    padding-top: 60px;
+    padding-bottom: 80px;
+}
+
+/* ===============================
+   TAJ LOGO + NIFI LOGO
+==================================*/
+.nifi-logo {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 130px;
+}
+
+/* ===============================
+   HEADINGS
+==================================*/
+h1, h2, h3, h5 {
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* ===============================
+   CARD LOGIN BOX
+==================================*/
+.card {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 16px;
+    padding: 30px 25px;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.35);
+    backdrop-filter: blur(3px);
+}
+
+.card h2 {
+    font-size: 28px;
+    color: #E41613;
+    text-align: left;
+    font-weight: 700;
+}
+
+.line {
+    border: none;
+    height: 2px;
+    background: #E41613;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 14px;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+/* ===============================
+   INPUT FIELDS
+==================================*/
+.textfield {
+    display: flex;
+    align-items: center;
+    border: 1px solid #dcdcdc;
+    background: #fff;
+    border-radius: 8px;
+    padding: 6px 12px;
+    margin-bottom: 16px;
+    transition: 0.3s;
+}
+
+.textfield:focus-within {
+    border-color: #E41613;
+    box-shadow: 0 0 5px rgba(228, 22, 19, 0.4);
+}
+
+.textfield img {
+    margin-right: 12px;
+}
+
+.textfield input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+}
+
+.field-icon {
+    position: absolute;
+    right: 20px;
+    margin-top: -26px;
+    cursor: pointer;
+}
+
+/* ===============================
+   FORGOT PASSWORD
+==================================*/
+.forgot a {
+    color: #E41613;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* ===============================
+   BUTTON
+==================================*/
+.button {
+    width: 100%;
+    background: #E41613;
+    border: none;
+    padding: 12px 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background: #c91411;
+}
+
+/* ===============================
+   ALERT BOX
+==================================*/
+.alert-danger {
+    background: rgba(255, 0, 0, 0.16);
+    color: #E41613;
+    border: 1px solid #E41613;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 6px;
+}
+
+/* ===============================
+   COPYRIGHT TEXT
+==================================*/
+.copyright {
+    text-align: center;
+    font-size: 13px;
+    color: #eee;
+}
+
+/* ===============================
+   MOBILE RESPONSIVE
+==================================*/
+@media (max-width: 768px) {
+    .card {
+        margin-top: 20px;
+    }
+    h1 {
+        font-size: 24px !important;
+    }
+    .nifi-logo {
+        width: 100px;
+        top: 5px;
+    }
+}
+
         .simplebar-content {
             padding-bottom: 100px !important
         }
